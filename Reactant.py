@@ -46,7 +46,7 @@ for eachkey in dictChemicalEquation:
 print n
 '''
 
-# find related Reactant
+# find related Reactant's uri
 setMaterial = set()  # save all related Uri
 for eachlineRDF in linesRDF:
     eachlineRDF = eachlineRDF.replace('\n', '')
@@ -56,6 +56,17 @@ for eachlineRDF in linesRDF:
             if words[2] not in setMaterial:
                 setMaterial.add(words[2])
 
+'''
 for eachkey in setMaterial:
     print eachkey
+
+'''
+
+# find related uri's label
+for eachlineRDF in linesRDF:
+    eachlineRDF = eachlineRDF.replace('\n', '')
+    words = eachlineRDF.split(' ')
+    if words[0] in setMaterial:
+        if words[1]
+
 
