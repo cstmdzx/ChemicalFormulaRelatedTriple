@@ -11,6 +11,7 @@ n = 0
 dictChemicalEquation = dict()  # map Uri to equation's text
 setChemicalEquationUri = set()
 
+# search all equation's uri
 for eachlineRDF in linesRDF:
     eachlineRDF = eachlineRDF.replace('\n', '')
     words = eachlineRDF.split(' ')
@@ -20,6 +21,7 @@ for eachlineRDF in linesRDF:
             n += 1
             setChemicalEquationUri.add(words[0])
 
+# find all equation uri's label
 for eachlineRDF in linesRDF:
     eachlineRDF = eachlineRDF.replace('\n', '')
     words = eachlineRDF.split(' ')
@@ -37,8 +39,19 @@ for eachlineRDF in linesRDF:
 
 #print u'\u79bb\u5b50\u53cd\u5e94\u65b9\u7a0b\u5f0f'
 
+'''
 for eachkey in dictChemicalEquation:
     print eachkey
     print dictChemicalEquation[eachkey]
 print n
+'''
+
+# find related Reactant
+for eachlineRDF in linesRDF:
+    eachlineRDF = eachlineRDF.replace('\n', '')
+    words = eachlineRDF.split(' ')
+    if words[0] in setChemicalEquationUri:
+        if words[1] == '<http://edukb.org/knowledge/0.1/property/common#relatedTo>':
+
+
 
