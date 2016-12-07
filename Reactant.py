@@ -47,11 +47,15 @@ print n
 '''
 
 # find related Reactant
+setMaterial = set()  # save all related Uri
 for eachlineRDF in linesRDF:
     eachlineRDF = eachlineRDF.replace('\n', '')
     words = eachlineRDF.split(' ')
     if words[0] in setChemicalEquationUri:
         if words[1] == '<http://edukb.org/knowledge/0.1/property/common#relatedTo>':
+            if words[2] not in setMaterial:
+                setMaterial.add(words[2])
 
-
+for eachkey in setMaterial:
+    print eachkey
 
