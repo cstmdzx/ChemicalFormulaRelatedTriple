@@ -47,26 +47,71 @@ print n
 '''
 
 # find related Reactant's uri
-setMaterial = set()  # save all related Uri
+setMaterialUri = set()  # save all related Uri
 for eachlineRDF in linesRDF:
     eachlineRDF = eachlineRDF.replace('\n', '')
     words = eachlineRDF.split(' ')
     if words[0] in setChemicalEquationUri:
         if words[1] == '<http://edukb.org/knowledge/0.1/property/common#relatedTo>':
-            if words[2] not in setMaterial:
-                setMaterial.add(words[2])
+            if words[2] not in setMaterialUri:
+                setMaterialUri.add(words[2])
 
 '''
 for eachkey in setMaterial:
     print eachkey
 
 '''
-
+m = 0
 # find related uri's label
+dictChemicalFormula = dict()
 for eachlineRDF in linesRDF:
     eachlineRDF = eachlineRDF.replace('\n', '')
     words = eachlineRDF.split(' ')
-    if words[0] in setMaterial:
-        if words[1]
+    if words[0] in setMaterialUri:
+        if words[1] == '<http://www.w3.org/2000/01/rdf-schema#label>':
+            label = words[2].replace('"', '')
+            label = label.decode('unicode-escape')
+            dictChemicalFormula[words[0]] = label
+            m += 1
 
+'''
+for eachkey in dictChemicalFormula:
+    print eachkey
+    print dictChemicalFormula[eachkey]
+'''
+# print m
+
+listUriTuple = list()
+for eachlineRDF in linesRDF:
+    eachlineRDF = eachlineRDF.replace('\n', '')
+    words = eachlineRDF.split(' ')
+    if words[0] in setChemicalEquationUri:
+        if words[1] == '<http://edukb.org/knowledge/0.1/property/common#relatedTo>':
+            listUriTuple.append([words[0], '', words[2]])
+
+listResTuple = list()
+for eachTuple in listUriTuple:
+    strSubject = dictChemicalEquation[eachTuple[0]]
+    strPredicate = u'\u53cd\u5e94\u7269'
+    if eachTuple[2] in dictChemicalFormula:
+        strObject = dictChemicalFormula[eachTuple[2]]
+    else:
+
+        strObject = eachTuple[2].replace('\\\\', '\\')
+        strObject = strObject.replace('"', '')
+        strObject = strObject.decode('unicode-escape')
+    listResTuple.append([strSubject, strPredicate, strObject])
+
+intLen = listResTuple.__len__()
+
+for eachTuple in listResTuple:
+    print intLen
+    print eachTuple[0] + ' ' + eachTuple[1] + ' ' + eachTuple[2]
+    rin = raw_input('Choice(y/n)? ')
+    intLen -= 1
+    if rin == 'y':
+        strTemp = eachTuple[0] + ' ' + eachTuple[1] + ' ' + eachTuple[2] + '\n'
+        fileChemicalReaction.write(strTemp.encode('unicode-escape'))
+    else:
+        continue
 
