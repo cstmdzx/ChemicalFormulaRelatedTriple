@@ -1,5 +1,7 @@
 import xlrd
 import xlwt
+import re
+import pdb
 from openpyxl import load_workbook
 
 excelFromRDF = load_workbook('ChemicalRelated.xlsx')
@@ -32,13 +34,29 @@ for eachRow in rowsFromConcept:
 # print sheetUnfinished
 intLine = 0
 # print sheetUnfinished.cell(1, 1).value
+patternEquationName = re.compile(u'([\u4e00-\u9fa5]+)\u4e0e([\u4e00-\u9fa5]+)\u7684\u53cd\u5e94')
 for eachItem in setUnfinished:
     # sheetUnfinished.put_cell(intLine, 0, 1, eachItem, 0)
+    match = patternEquationName.search(eachItem)
+#    pdb.set_trace()
+    if not match:
+        print 'match error'
+        print eachItem
+        # continue
+        strReactant1 = ''
+        strReactant2 = ''
+    else:
+        strReactant1 = match.group(1)
+        strReactant2 = match.group(2)
     intLine += 1
     sheet2FromConcept.cell(row = intLine, column = 1, value = eachItem)
+    sheet2FromConcept.cell(row = intLine, column = 2, value = u'\u53cd\u5e94\u7269')
+    sheet2FromConcept.cell(row = intLine, column = 3, value = strReactant1)
     # sheetUnfinished.put_cell(intLine, 0, 1, eachItem, 0)
     intLine += 1
     sheet2FromConcept.cell(row = intLine, column = 1, value = eachItem)
+    sheet2FromConcept.cell(row = intLine, column = 2, value = u'\u53cd\u5e94\u7269')
+    sheet2FromConcept.cell(row = intLine, column = 3, value = strReactant2)
 
 excelFromConcept.save('EquationRelatedReactant.xlsx')
 
